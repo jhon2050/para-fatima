@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e0386b">
+<title>Tulipanes para Fátima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: una columna estrecha tipo carta, con un jardín de tulipanes que se planta tocando */
+:root {
+  --bg: #fbf1f3;
+  --paper: #fffafb;
+  --ink: #3a1630;
+  --muted: #7d5a70;
+  --tulip: #e0386b;
+  --tulip-2: #f27a9b;
+  --tulip-3: #c42a5c;
+  --stem: #3f8a5a;
+  --line: #ecd3dc;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --poem: "Instrument Serif", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d0f1a; --paper: #281523; --ink: #f8e6ee; --muted: #c6a3b6;
+    --tulip: #ff5c8a; --tulip-2: #ff9ab4; --tulip-3: #e23d6f; --stem: #6cc08a; --line: #3f2537;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1d0f1a; --paper: #281523; --ink: #f8e6ee; --muted: #c6a3b6;
+  --tulip: #ff5c8a; --tulip-2: #ff9ab4; --tulip-3: #e23d6f; --stem: #6cc08a; --line: #3f2537;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+
+/* Hero */
+.hero {
+  margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+  padding-top: calc(env(safe-area-inset-top, 0px) + 3rem);
+  text-align: left;
+}
+.eyebrow {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: .78rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--tulip);
+}
+h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(3.4rem, 17vw, 6.2rem);
+  line-height: .9;
+  letter-spacing: -.035em;
+  margin: .4rem 0 .6rem;
+  text-wrap: balance;
+}
+h1 em {
+  font-family: var(--poem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--tulip);
+  letter-spacing: -.01em;
+}
+.lead { color: var(--muted); max-width: 34ch; margin: 0; }
+
+.garden {
+  position: relative;
+  margin-top: 1.6rem;
+  border-bottom: 2px solid var(--line);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.garden svg { display: block; width: 100%; height: auto; }
+.garden-hint {
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  font-size: .85rem; color: var(--muted); padding: .6rem 0 0;
+}
+.garden-hint b { color: var(--tulip); font-variant-numeric: tabular-nums; }
+.tulip { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 5s ease-in-out infinite alternate; }
+.tulip.new { animation: grow .9s cubic-bezier(.2,.9,.3,1.3) both, sway 5s ease-in-out .9s infinite alternate; }
+@keyframes sway { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
+@keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* Secciones */
+section { padding-block: 3rem 0; }
+h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 7vw, 2.3rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin: .3rem 0 1rem;
+  text-wrap: balance;
+}
+p { margin: 0 0 1rem; }
+
+/* Checklist */
+.check { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
+.check label {
+  display: grid; grid-template-columns: 28px 1fr; gap: .8rem; align-items: start;
+  padding: .85rem 1rem; background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+  cursor: pointer; transition: border-color .2s;
+}
+.check input { position: absolute; opacity: 0; pointer-events: none; }
+.box {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--tulip-2);
+  display: grid; place-items: center; transition: background .2s, transform .2s;
+}
+.box svg { width: 15px; height: 15px; opacity: 0; transition: opacity .2s; }
+.check input:checked + .box { background: var(--tulip); border-color: var(--tulip); transform: scale(1.05); }
+.check input:checked + .box svg { opacity: 1; }
+.check input:focus-visible + .box { outline: 3px solid var(--tulip-2); outline-offset: 2px; }
+.item-t { font-weight: 500; display: block; line-height: 1.35; }
+.item-s { color: var(--muted); font-size: .9rem; display: block; line-height: 1.4; margin-top: .15rem; }
+.check .pending .box { border-style: dashed; }
+.space { font-size: .85rem; color: var(--muted); margin-top: .8rem; }
+
+/* Menú */
+.menu {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 4px;
+  padding: 1.6rem 1.3rem; position: relative;
+  box-shadow: 0 1px 0 var(--line), 0 14px 30px -22px var(--tulip-3);
+}
+.menu h3 {
+  font-family: var(--poem); font-weight: 400; font-style: italic;
+  text-align: center; font-size: 1.9rem; margin: 0 0 1.2rem; color: var(--tulip);
+}
+.course { display: grid; grid-template-columns: 1fr; gap: .1rem; padding: .8rem 0; border-top: 1px dashed var(--line); }
+.course-k { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.course-v { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.25; }
+.course-n { font-size: .9rem; color: var(--muted); }
+.menu-foot { text-align: center; font-size: .8rem; color: var(--muted); margin: .8rem 0 0; }
+
+/* Poema */
+.poem {
+  font-family: var(--poem);
+  font-size: clamp(1.5rem, 6vw, 1.9rem);
+  line-height: 1.3;
+  margin: 0;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--tulip);
+}
+.poem span { display: block; }
+.poem .gap { height: .7rem; }
+.sig { font-size: .85rem; color: var(--muted); margin-top: .9rem; }
+
+/* Adivinanza */
+.riddle { perspective: 900px; }
+.card {
+  position: relative; display: grid; width: 100%; min-height: 170px; border: 0; padding: 0; background: none;
+  font: inherit; color: inherit; cursor: pointer; text-align: left;
+  transform-style: preserve-3d; transition: transform .7s cubic-bezier(.3,.8,.3,1);
+}
+.card.flip { transform: rotateY(180deg); }
+.face {
+  grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 18px; padding: 1.3rem 1.3rem; display: flex; flex-direction: column; justify-content: center; gap: .3rem;
+}
+.front { background: var(--tulip); color: #fff; }
+.front small, .back small { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; opacity: .85; }
+.front strong { font-family: var(--display); font-size: 1.45rem; line-height: 1.15; }
+.back { background: var(--paper); border: 2px solid var(--tulip); transform: rotateY(180deg); }
+.back strong { font-family: var(--display); font-size: 2.4rem; line-height: 1; color: var(--tulip); }
+.back span { font-size: .95rem; color: var(--muted); }
+.card:focus-visible { outline: 3px solid var(--tulip-2); outline-offset: 4px; border-radius: 18px; }
+
+/* Cierre */
+.closing {
+  margin-top: 3.5rem; padding-block: 2.4rem 3rem; border-top: 2px solid var(--line);
+}
+.closing h2 { font-size: clamp(2rem, 9vw, 3rem); }
+.btns { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.2rem; }
+.btn {
+  font: inherit; font-weight: 600; font-size: 1rem; border-radius: 999px; padding: .85rem 1.4rem;
+  border: 2px solid var(--tulip); cursor: pointer; transition: transform .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(.96); }
+.btn:focus-visible { outline: 3px solid var(--tulip-2); outline-offset: 3px; }
+.btn.yes { background: var(--tulip); color: #fff; }
+.btn.maybe { background: transparent; color: var(--tulip); }
+.answer {
+  margin-top: 1.2rem; padding: 1rem 1.1rem; border-radius: 14px; background: var(--paper);
+  border: 1px solid var(--line); font-size: 1rem;
+}
+.foot { font-size: .8rem; color: var(--muted); padding-bottom: 2rem; }
+
+.petal { position: fixed; top: -30px; pointer-events: none; z-index: 20; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); opacity: .2; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tulip, .tulip.new { animation: none; }
+  .card { transition: none; }
+  .petal { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Una página hecha solo para ti</div>
+    <h1>Para <em>Fátima</em></h1>
+    <p class="lead">Arequipeña, bailarina, lectora de poesía e introvertida selectiva. Esto es lo que he aprendido de ti, contado con tulipanes.</p>
+
+    <div class="garden" id="garden" role="button" tabindex="0" aria-label="Jardín de tulipanes. Toca para plantar uno nuevo">
+      <svg id="gardenSvg" viewBox="0 0 600 220" aria-hidden="true">
+        <defs>
+          <g id="tulipShape">
+            <path d="M30 60 C 30 85, 31 100, 30 130" fill="none" stroke="var(--stem)" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M30 118 C 16 110, 9 96, 11 84 C 22 90, 29 102, 30 118 Z" fill="var(--stem)"/>
+            <path d="M30 108 C 42 98, 48 88, 47 78 C 37 84, 31 94, 30 108 Z" fill="var(--stem)" opacity=".85"/>
+          </g>
+        </defs>
+        <g id="beds"></g>
+      </svg>
+    </div>
+    <div class="garden-hint"><span>Toca el jardín para plantar un tulipán</span><span>Plantados: <b id="count">0</b></span></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <div class="eyebrow">El famoso check list</div>
+    <h2>Lo que sé de ti, hasta ahora</h2>
+    <p>Me dijiste que me iba a faltar espacio en la lista. Por ahora voy así:</p>
+    <ul class="check">
+      <li><label><input type="checkbox" id="c1" checked><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">Tus flores favoritas son los tulipanes</span><span class="item-s">Las rosas eran demasiado obvias.</span></span></label></li>
+      <li><label><input type="checkbox" id="c2" checked><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">Tus raíces son de Arequipa</span><span class="item-s">Y no de Aurelia, ya lo aprendí. El rocoto relleno queda anotado.</span></span></label></li>
+      <li><label><input type="checkbox" id="c3" checked><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">Lo que nunca te aburre: el baile y la poesía</span><span class="item-s">El gimnasio es disciplina. El baile es gusto.</span></span></label></li>
+      <li><label><input type="checkbox" id="c4" checked><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">Prefieres el vino antes que la cerveza</span><span class="item-s">Para gustos, colores.</span></span></label></li>
+      <li><label><input type="checkbox" id="c5" checked><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">Introvertida selectiva</span><span class="item-s">Paciente no eres, eso también quedó claro.</span></span></label></li>
+      <li><label><input type="checkbox" id="c6" checked><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">En casa el trono es de tu papá</span><span class="item-s">Y él las quiere por igual a ti y a tu hermana.</span></span></label></li>
+      <li class="pending"><label><input type="checkbox" id="c7"><span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="item-t">Probar el matcha o el taro que me recomendaste</span><span class="item-s">Pendiente. Mejor si lo pruebo contigo.</span></span></label></li>
+    </ul>
+    <p class="space">Todavía queda espacio en la lista.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Carta de la casa</div>
+    <h2>El menú que armamos por chat</h2>
+    <div class="menu">
+      <h3>Menú del día</h3>
+      <div class="course">
+        <span class="course-k">Entrada</span>
+        <span class="course-v">Todavía en discusión</span>
+        <span class="course-n">Los platillos vienen con entrada. Eso sigo diciendo.</span>
+      </div>
+      <div class="course">
+        <span class="course-k">Fondo</span>
+        <span class="course-v">Tallarines Alfredo con camarones</span>
+        <span class="course-n">Receta de la chef. Al parecer ella ya sabía prepararlo.</span>
+      </div>
+      <div class="course">
+        <span class="course-k">Alternativa</span>
+        <span class="course-v">Arroz con mariscos o seco de corderito con frejol</span>
+        <span class="course-n">Sugerencia del ingeniero.</span>
+      </div>
+      <div class="course">
+        <span class="course-k">Postre</span>
+        <span class="course-v">Mis mensajes</span>
+        <span class="course-n">Según la crítica, por suerte soy ingeniero, porque como cómico me muero de hambre.</span>
+      </div>
+      <div class="course">
+        <span class="course-k">Para acompañar</span>
+        <span class="course-v">Una copa de vino</span>
+        <span class="course-n">Nada de cerveza en esta mesa.</span>
+      </div>
+      <p class="menu-foot">Sin tappers. Cada plato se cocina el mismo día.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Como te gusta la poesía</div>
+    <h2>Unos versos, sin ser poeta</h2>
+    <p class="poem">
+      <span>No te traje rosas,</span>
+      <span>eran demasiado obvias.</span>
+      <span class="gap"></span>
+      <span>Te traje tulipanes</span>
+      <span>que no prometen nada,</span>
+      <span>solo se abren despacio</span>
+      <span>cuando sienten que es de día.</span>
+      <span class="gap"></span>
+      <span>Como tú con la gente nueva.</span>
+      <span>Como yo, esperando que amanezca.</span>
+    </p>
+    <p class="sig">Escrito por alguien de la selva que vive en modo hornito.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">La pregunta para ver si soy inteligente</div>
+    <h2>Una fecha que se celebra con tu nombre</h2>
+    <div class="riddle">
+      <button class="card" id="card" type="button" aria-pressed="false" aria-label="Voltear tarjeta para ver mi respuesta">
+        <span class="face front">
+          <small>Tu pista</small>
+          <strong>“Tal vez hay alguna fecha especial que se celebre con mi nombre.”</strong>
+          <span>Toca para ver mi respuesta</span>
+        </span>
+        <span class="face back">
+          <small>Mi respuesta</small>
+          <strong>13 de mayo</strong>
+          <span>Día de la Virgen de Fátima. Si acerté, me debes un matcha. Si no, te lo debo yo.</span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="eyebrow">Lo último</div>
+    <h2>¿Vamos por ese matcha?</h2>
+    <p>Tú eliges el lugar. Yo llevo los tulipanes.</p>
+    <div class="btns">
+      <button class="btn yes" id="yes" type="button">Sí, vamos</button>
+      <button class="btn maybe" id="maybe" type="button">Déjame revisar mis pendientes</button>
+    </div>
+    <div class="answer" id="answer" hidden></div>
+  </section>
+
+  <p class="foot">Hecho con cariño por tu ingeniero favorito (y cómico frustrado).</p>
+</main>
+
+<script>
+(function () {
+  var svg = document.getElementById('gardenSvg');
+  var beds = document.getElementById('beds');
+  var countEl = document.getElementById('count');
+  var NS = 'http://www.w3.org/2000/svg';
+  var colors = ['var(--tulip)', 'var(--tulip-2)', 'var(--tulip-3)'];
+  var count = 0;
+
+  function headPath() {
+    return 'M14 22 L22 31 L30 16 L38 31 L46 22 C 49 44, 42 62, 30 62 C 18 62, 11 44, 14 22 Z';
+  }
+
+  function plant(x, scale, color, isNew, delay) {
+    var g = document.createElementNS(NS, 'g');
+    var y = 220 - 130 * scale;
+    g.setAttribute('transform', 'translate(' + (x - 30 * scale) + ' ' + y + ') scale(' + scale + ')');
+    var inner = document.createElementNS(NS, 'g');
+    inner.setAttribute('class', 'tulip' + (isNew ? ' new' : ''));
+    inner.style.animationDelay = isNew ? '0s, .9s' : (delay || 0) + 's';
+    var use = document.createElementNS(NS, 'use');
+    use.setAttribute('href', '#tulipShape');
+    var head = document.createElementNS(NS, 'path');
+    head.setAttribute('d', headPath());
+    head.setAttribute('fill', color);
+    var shine = document.createElementNS(NS, 'path');
+    shine.setAttribute('d', 'M30 18 C 27 32, 27 48, 30 61');
+    shine.setAttribute('fill', 'none');
+    shine.setAttribute('stroke', 'rgba(255,255,255,.35)');
+    shine.setAttribute('stroke-width', '2');
+    inner.appendChild(use);
+    inner.appendChild(head);
+    inner.appendChild(shine);
+    g.appendChild(inner);
+    beds.appendChild(g);
+    count++;
+    countEl.textContent = count;
+  }
+
+  var start = [[40,.9],[95,1.15],[150,.8],[205,1.3],[265,1],[320,1.45],[380,.95],[435,1.2],[490,.85],[550,1.1]];
+  start.forEach(function (p, i) { plant(p[0], p[1], colors[i % 3], false, -i * .7); });
+
+  function addAt(clientX) {
+    var r = svg.getBoundingClientRect();
+    var x = ((clientX - r.left) / r.width) * 600;
+    x = Math.max(25, Math.min(575, x));
+    plant(x, .75 + Math.random() * .7, colors[Math.floor(Math.random() * 3)], true);
+  }
+  var garden = document.getElementById('garden');
+  garden.addEventListener('click', function (e) { addAt(e.clientX); });
+  garden.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      var r = svg.getBoundingClientRect();
+      addAt(r.left + Math.random() * r.width);
+    }
+  });
+
+  var card = document.getElementById('card');
+  card.addEventListener('click', function () {
+    var on = card.classList.toggle('flip');
+    card.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function petals() {
+    if (reduce) return;
+    for (var i = 0; i < 26; i++) {
+      var s = document.createElementNS(NS, 'svg');
+      s.setAttribute('viewBox', '0 0 20 26');
+      s.setAttribute('width', 14 + Math.random() * 12);
+      s.setAttribute('class', 'petal');
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.animationDuration = (3 + Math.random() * 3) + 's';
+      s.style.animationDelay = (Math.random() * 1.2) + 's';
+      var p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', 'M10 0 C 18 6, 20 18, 10 26 C 0 18, 2 6, 10 0 Z');
+      p.setAttribute('fill', colors[i % 3]);
+      s.appendChild(p);
+      document.body.appendChild(s);
+      (function (el) { setTimeout(function () { el.remove(); }, 7500); })(s);
+    }
+  }
+
+  var answer = document.getElementById('answer');
+  document.getElementById('yes').addEventListener('click', function () {
+    answer.hidden = false;
+    answer.innerHTML = '<strong>Trato hecho.</strong> Escríbeme por Instagram con el día y la hora, y yo me encargo del resto. Los tulipanes ya están en camino.';
+    petals();
+  });
+  document.getElementById('maybe').addEventListener('click', function () {
+    answer.hidden = false;
+    answer.innerHTML = 'Revisa tranquila, aquí espero. Igual el jardín de arriba sigue creciendo mientras tanto.';
+  });
+})();
+</script>
+</body>
+</html>
