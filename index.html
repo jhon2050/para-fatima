@@ -138,21 +138,25 @@ p { margin: 0 0 1rem; }
 .check .pending .box { border-style: dashed; }
 .space { font-size: .85rem; color: var(--muted); margin-top: .8rem; }
 
-/* Menú */
-.menu {
-  background: var(--paper); border: 1px solid var(--line); border-radius: 4px;
-  padding: 1.6rem 1.3rem; position: relative;
-  box-shadow: 0 1px 0 var(--line), 0 14px 30px -22px var(--tulip-3);
+/* Matcha o taro */
+.duel { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.pick {
+  font: inherit; color: var(--ink); text-align: center; cursor: pointer;
+  background: var(--paper); border: 2px solid var(--line); border-radius: 20px;
+  padding: 1.2rem .8rem 1rem; display: flex; flex-direction: column; align-items: center; gap: .35rem;
+  transition: border-color .2s, transform .2s;
+  -webkit-tap-highlight-color: transparent;
 }
-.menu h3 {
-  font-family: var(--poem); font-weight: 400; font-style: italic;
-  text-align: center; font-size: 1.9rem; margin: 0 0 1.2rem; color: var(--tulip);
+.pick:active { transform: scale(.97); }
+.pick:focus-visible { outline: 3px solid var(--tulip-2); outline-offset: 3px; }
+.pick[aria-pressed="true"] { border-color: var(--tulip); transform: translateY(-3px); }
+.pick svg { width: 72px; height: 86px; }
+.pick b { font-family: var(--display); font-size: 1.3rem; line-height: 1.1; }
+.pick small { font-size: .82rem; color: var(--muted); line-height: 1.3; }
+.verdict {
+  margin-top: 1rem; padding: 1rem 1.1rem; border-radius: 14px; background: var(--paper);
+  border: 1px solid var(--line);
 }
-.course { display: grid; grid-template-columns: 1fr; gap: .1rem; padding: .8rem 0; border-top: 1px dashed var(--line); }
-.course-k { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
-.course-v { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.25; }
-.course-n { font-size: .9rem; color: var(--muted); }
-.menu-foot { text-align: center; font-size: .8rem; color: var(--muted); margin: .8rem 0 0; }
 
 /* Poema */
 .poem {
@@ -261,37 +265,22 @@ p { margin: 0 0 1rem; }
   </section>
 
   <section>
-    <div class="eyebrow">Carta de la casa</div>
-    <h2>El menú que armamos por chat</h2>
-    <div class="menu">
-      <h3>Menú del día</h3>
-      <div class="course">
-        <span class="course-k">Entrada</span>
-        <span class="course-v">Todavía en discusión</span>
-        <span class="course-n">Los platillos vienen con entrada. Eso sigo diciendo.</span>
-      </div>
-      <div class="course">
-        <span class="course-k">Fondo</span>
-        <span class="course-v">Tallarines Alfredo con camarones</span>
-        <span class="course-n">Receta de la chef. Al parecer ella ya sabía prepararlo.</span>
-      </div>
-      <div class="course">
-        <span class="course-k">Alternativa</span>
-        <span class="course-v">Arroz con mariscos o seco de corderito con frejol</span>
-        <span class="course-n">Sugerencia del ingeniero.</span>
-      </div>
-      <div class="course">
-        <span class="course-k">Postre</span>
-        <span class="course-v">Mis mensajes</span>
-        <span class="course-n">Según la crítica, por suerte soy ingeniero, porque como cómico me muero de hambre.</span>
-      </div>
-      <div class="course">
-        <span class="course-k">Para acompañar</span>
-        <span class="course-v">Una copa de vino</span>
-        <span class="course-n">Nada de cerveza en esta mesa.</span>
-      </div>
-      <p class="menu-foot">Sin tappers. Cada plato se cocina el mismo día.</p>
+    <div class="eyebrow">Tu recomendación</div>
+    <h2>¿Matcha o taro?</h2>
+    <p>Me dijiste que uno de esos dos debería probar. Elige tú cuál pido primero.</p>
+    <div class="duel">
+      <button class="pick" type="button" id="pickMatcha" aria-pressed="false">
+        <svg viewBox="0 0 72 86" aria-hidden="true"><path d="M14 24 H58 L53 80 C53 83 51 84 48 84 H24 C21 84 19 83 19 80 Z" fill="#7fae5a"/><rect x="10" y="16" width="52" height="9" rx="4" fill="var(--ink)" opacity=".85"/><path d="M40 16 L46 2" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="30" cy="66" r="3.5" fill="var(--ink)" opacity=".7"/><circle cx="40" cy="72" r="3.5" fill="var(--ink)" opacity=".7"/><circle cx="45" cy="62" r="3.5" fill="var(--ink)" opacity=".7"/></svg>
+        <b>Matcha</b>
+        <small>Té verde japonés</small>
+      </button>
+      <button class="pick" type="button" id="pickTaro" aria-pressed="false">
+        <svg viewBox="0 0 72 86" aria-hidden="true"><path d="M14 24 H58 L53 80 C53 83 51 84 48 84 H24 C21 84 19 83 19 80 Z" fill="#b593c9"/><rect x="10" y="16" width="52" height="9" rx="4" fill="var(--ink)" opacity=".85"/><path d="M40 16 L46 2" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="30" cy="66" r="3.5" fill="var(--ink)" opacity=".7"/><circle cx="40" cy="72" r="3.5" fill="var(--ink)" opacity=".7"/><circle cx="45" cy="62" r="3.5" fill="var(--ink)" opacity=".7"/></svg>
+        <b>Taro</b>
+        <small>De la raíz de un tubérculo asiático</small>
+      </button>
     </div>
+    <div class="verdict" id="verdict" hidden></div>
   </section>
 
   <section>
@@ -428,6 +417,20 @@ p { margin: 0 0 1rem; }
       (function (el) { setTimeout(function () { el.remove(); }, 7500); })(s);
     }
   }
+
+  var verdict = document.getElementById('verdict');
+  var pickM = document.getElementById('pickMatcha');
+  var pickT = document.getElementById('pickTaro');
+  function choose(isMatcha) {
+    pickM.setAttribute('aria-pressed', isMatcha ? 'true' : 'false');
+    pickT.setAttribute('aria-pressed', isMatcha ? 'false' : 'true');
+    verdict.hidden = false;
+    verdict.innerHTML = isMatcha
+      ? '<strong>Matcha entonces.</strong> Lo pruebo contigo y te doy mi veredicto en vivo. Si no me gusta, el taro queda para la revancha.'
+      : '<strong>Taro entonces.</strong> Confío en tu recomendación. El matcha queda pendiente para la segunda salida.';
+  }
+  pickM.addEventListener('click', function () { choose(true); });
+  pickT.addEventListener('click', function () { choose(false); });
 
   var answer = document.getElementById('answer');
   document.getElementById('yes').addEventListener('click', function () {
